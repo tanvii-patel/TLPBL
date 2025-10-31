@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-success">Welcome, {{ user.username }}!</h2>
+    <p class="text-muted">Manage your timetable and resources from one place.</p>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm rounded-4 border-0 h-100">
+        <div class="card-body text-center">
+          <h4 class="card-title text-success">📅 Timetable Management</h4>
+          <p class="card-text">View, add, and organize your class schedule efficiently.</p>
+          <a href="{% url 'timetable' %}" class="btn btn-success">Go to Timetable</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm rounded-4 border-0 h-100">
+        <div class="card-body text-center">
+          <h4 class="card-title text-success">📚 Resource Management</h4>
+          <p class="card-text">Access and upload study materials, notes, and useful links.</p>
+          <a href="{% url 'resources' %}" class="btn btn-success">Go to Resources</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="card-title">Task Management</h5>
+        <p class="card-text">Create, edit, and track your academic tasks.</p>
+        <a href="{% url 'tasks' %}" class="btn btn-success">Go to Tasks</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

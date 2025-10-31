@@ -1,0 +1,67 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+  <h2 class="fw-bold text-success mb-4">📅 Your Timetable</h2>
+
+  <!-- Timetable Form -->
+  <div class="card p-4 shadow-sm mb-4">
+    <h5 class="text-secondary mb-3">Add New Entry</h5>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row g-2">
+        <div class="col-md-3">
+          <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+        </div>
+        <div class="col-md-2">
+          <input type="text" name="day" class="form-control" placeholder="Day" required>
+        </div>
+        <div class="col-md-2">
+          <input type="time" name="start_time" class="form-control" placeholder="Start Time" required>
+        </div>
+        <div class="col-md-2">
+          <input type="time" name="end_time" class="form-control" placeholder="End Time" required>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-success w-100">Add</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Timetable List -->
+  <div class="card shadow-sm p-3">
+    {% if timetables %}
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-success text-center">
+          <tr>
+            <th>Subject</th>
+            <th>Day</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in timetables %}
+          <tr>
+            <td>{{ t.subject }}</td>
+            <td>{{ t.day }}</td>
+            <td>{{ t.start_time }}</td>
+            <td>{{ t.end_time }}</td>
+            <td class="text-center">
+              <a href="{% url 'timetable_delete' t.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="alert alert-warning text-center m-2">
+        No timetable entries yet — add one above!
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

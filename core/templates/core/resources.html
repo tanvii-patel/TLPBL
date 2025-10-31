@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Your Resources</h2>
+
+<form method="POST" enctype="multipart/form-data" class="mb-3">
+  {% csrf_token %}
+  <div class="mb-2">
+    <input type="text" name="title" placeholder="Title" class="form-control" required>
+  </div>
+
+  <div class="mb-2">
+    <input type="url" name="link" placeholder="Add link (optional)" class="form-control">
+  </div>
+
+  <div class="mb-2">
+    <label><strong>Upload PDF:</strong></label>
+    <input type="file" name="file" accept=".pdf" class="form-control">
+  </div>
+
+  <div class="mb-2">
+    <label><strong>Upload Image:</strong></label>
+    <input type="file" name="image" accept="image/*" class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-success mt-2">Add</button>
+</form>
+
+<hr>
+
+<table class="table table-bordered mt-3">
+  <thead class="table-success">
+    <tr>
+      <th>Title</th>
+      <th>Preview</th>
+      <th>Link</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in resources %}
+    <tr>
+      <td>{{ r.title }}</td>
+      <td>
+        {% if r.file %}
+          <a href="{{ r.file.url }}" target="_blank" class="btn btn-sm btn-outline-primary">View PDF</a>
+        {% elif r.image %}
+          <img src="{{ r.image.url }}" alt="Image" width="100" style="border-radius:5px;">
+        {% else %}
+          <em>No file</em>
+        {% endif %}
+      </td>
+      <td>
+        {% if r.link %}
+          <a href="{{ r.link }}" target="_blank" class="btn btn-sm btn-outline-info">Open Link</a>
+        {% else %}
+          <em>No link</em>
+        {% endif %}
+      </td>
+      <td>
+       <a href="{% url 'delete_resource' r.id %}" class="btn btn-danger btn-sm">Delete</a>
+
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4" class="text-center">No resources yet</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
