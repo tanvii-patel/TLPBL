@@ -43,6 +43,18 @@ class CustomLoginView(LoginView):
 
 
 @login_required
+def timetable_edit(request, pk):
+    timetable = get_object_or_404(Timetable, pk=pk, user=request.user)
+    if request.method == 'POST':
+        timetable.subject = request.POST['subject']
+        timetable.day = request.POST['day']
+        timetable.start_time = request.POST.get('start_time')
+        timetable.end_time = request.POST.get('end_time')
+        timetable.save()
+        return redirect('timetable')
+    return render(request, 'core/timetable_edit.html', {'timetable': timetable})
+
+@login_required
 def timetable(request):
     if request.method == 'POST':
         subject = request.POST['subject']
@@ -92,30 +104,48 @@ def task_toggle(request, id):
 
 
 @login_required
+def task_edit(request, id):
+    task = get_object_or_404(Task, id=id, user=request.user)
+    if request.method == 'POST':
+        task.title = request.POST.get('title')
+        task.due_date = request.POST.get('due_date')
+        task.save()
+        return redirect('tasks')
+    return render(request, 'core/task_edit.html', {'task': task})
+
+@login_required
 def task_delete(request, id):
     task = get_object_or_404(Task, id=id, user=request.user)
     task.delete()
     return redirect('tasks')
 
 
+@login_required
 def resources(request):
     if request.method == "POST":
         title = request.POST.get('title')
         file = request.FILES.get('file')
         image = request.FILES.get('image')
         link = request.POST.get('link')
-        Resource.objects.create(title=title, file=file, image=image,link=link)
+        Resource.objects.create(title=title, file=file, image=image, link=link, user=request.user)
         return redirect('resources')
 
-    resources = Resource.objects.all()
+    resources = Resource.objects.filter(user=request.user)
     return render(request, 'core/resources.html', {'resources': resources})
 
 @login_required
 def resource_delete(request, id):
-    resource = get_object_or_404(Resource, id=id)
+    resource = get_object_or_404(Resource, id=id, user=request.user)
     resource.delete()
     return redirect('resources')
 
 @login_required
 def dashboard(request):
-    return render(request, 'core/dashboard.html')
+    from datetime import date, timedelta
+    today = date.today()
+    upcoming_tasks = Task.objects.filter(user=request.user, due_date__gte=today, completed=False).order_by('due_date')[:5]
+    today_timetable = Timetable.objects.filter(user=request.user, day=today.strftime('%A')).order_by('start_time')
+    return render(request, 'core/dashboard.html', {
+        'upcoming_tasks': upcoming_tasks,
+        'today_timetable': today_timetable,
+    })
