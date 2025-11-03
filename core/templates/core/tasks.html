@@ -1,65 +1,67 @@
-{% extends 'core/base.html' %} {% block content %}
-<h2>Your Tasks</h2>
+{% extends 'core/base.html' %}
+{% block content %}
 
-<form method="POST" class="mb-3">
-  {% csrf_token %}
-  <div class="mb-2">
-    <input
-      type="text"
-      name="title"
-      placeholder="Task Title"
-      class="form-control"
-      required
-    />
+<div class="container mt-5">
+  <h2 class="fw-bold text-success mb-4">📝 Your Tasks</h2>
+
+  <!-- Add Task Form -->
+  <div class="card p-4 shadow-sm mb-4" style="border-radius: 15px; background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+    <h5 class="text-secondary mb-3">Add New Task</h5>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row g-3">
+        <div class="col-md-8">
+          <input type="text" name="title" placeholder="Task Title" class="form-control" style="border-radius: 10px;" required>
+        </div>
+        <div class="col-md-3">
+          <input type="date" name="due_date" class="form-control" style="border-radius: 10px;">
+        </div>
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-success w-100" style="border-radius: 10px;">Add</button>
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="mb-2">
-    <input type="date" name="due_date" class="form-control" />
+
+  <!-- Tasks List -->
+  <div class="card shadow-sm p-3" style="border-radius: 15px;">
+    {% if tasks %}
+      <table class="table table-hover align-middle">
+        <thead class="table-success text-center" style="border-radius: 10px;">
+          <tr>
+            <th>Task</th>
+            <th>Status</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks %}
+          <tr style="border-radius: 10px;">
+            <td>{{ task.title }}</td>
+            <td>
+              {% if task.completed %}
+                <span class="badge bg-success">✅ Completed</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">⏳ Pending</span>
+              {% endif %}
+            </td>
+            <td>{{ task.due_date|default:"-" }}</td>
+            <td class="text-center">
+              <a href="{% url 'task_edit' task.id %}" class="btn btn-outline-secondary btn-sm" style="border-radius: 8px;">Edit</a>
+              <a href="{% url 'task_toggle' task.id %}" class="btn btn-outline-primary btn-sm" style="border-radius: 8px;">Toggle</a>
+              <a href="{% url 'delete_task' task.id %}" class="btn btn-outline-danger btn-sm" style="border-radius: 8px;">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="alert alert-warning text-center m-3" style="border-radius: 10px;">
+        No tasks yet — add one above!
+      </div>
+    {% endif %}
   </div>
-  <button type="submit" class="btn btn-success mt-2">Add Task</button>
-</form>
+</div>
 
-<hr />
-
-<table class="table table-bordered mt-3">
-  <thead class="table-success">
-    <tr>
-      <th>Task</th>
-      <th>Status</th>
-      <th>Due Date</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for task in tasks %}
-    <tr>
-      <td>{{ task.title }}</td>
-      <td>
-        {% if task.completed %} ✅ Completed {% else %} ⏳ Pending {% endif %}
-      </td>
-      <td>{{ task.due_date|default:"-" }}</td>
-      <td>
-        <a
-          href="{% url 'task_edit' task.id %}"
-          class="btn btn-outline-secondary btn-sm"
-          >Edit</a
-        >
-        <a
-          href="{% url 'task_toggle' task.id %}"
-          class="btn btn-outline-primary btn-sm"
-          >Toggle</a
-        >
-        <a
-          href="{% url 'delete_task' task.id %}"
-          class="btn btn-outline-danger btn-sm"
-          >Delete</a
-        >
-      </td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="4" class="text-center">No tasks yet</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
 {% endblock %}

@@ -1,28 +1,21 @@
-{% extends 'core/base.html' %} {% block content %}
+{% extends 'core/base.html' %}
+{% block content %}
 
 <div class="container mt-5">
-  <h2 class="fw-bold text-success mb-4">📅 Edit Timetable Entry</h2>
+  <h2 class="fw-bold text-success mb-4">✏️ Edit Timetable Entry</h2>
 
-  <div class="card p-4 shadow-sm">
+  <div class="card p-4 shadow-sm" style="border-radius: 15px; background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
     <form method="POST">
       {% csrf_token %}
       <div class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <label for="subject" class="form-label">Subject</label>
-          <input
-            type="text"
-            name="subject"
-            value="{{ timetable.subject }}"
-            class="form-control"
-            required
-          />
+          <input type="text" name="subject" value="{{ timetable.subject }}" class="form-control" style="border-radius: 10px;" required>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
           <label for="day" class="form-label">Day</label>
-          <select name="day" class="form-control" required>
-            <option value="{{ timetable.day }}" selected>
-              {{ timetable.day }}
-            </option>
+          <select name="day" class="form-control" style="border-radius: 10px;" required>
+            <option value="{{ timetable.day }}" selected>{{ timetable.day }}</option>
             <option value="Monday">Monday</option>
             <option value="Tuesday">Tuesday</option>
             <option value="Wednesday">Wednesday</option>
@@ -34,27 +27,17 @@
         </div>
         <div class="col-md-6">
           <label for="start_time" class="form-label">Start Time</label>
-          <input
-            type="time"
-            name="start_time"
-            value="{{ timetable.start_time }}"
-            class="form-control"
-            required
-          />
+          <input type="time" name="start_time" value="{{ timetable.start_time }}" class="form-control" style="border-radius: 10px;" required>
         </div>
         <div class="col-md-6">
           <label for="end_time" class="form-label">End Time</label>
-          <input
-            type="time"
-            name="end_time"
-            value="{{ timetable.end_time }}"
-            class="form-control"
-            required
-          />
+          <input type="time" name="end_time" value="{{ timetable.end_time }}" class="form-control" style="border-radius: 10px;" required>
         </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-success">Update Entry</button>
-          <a href="{% url 'timetable' %}" class="btn btn-secondary">Cancel</a>
+        <div class="col-md-6">
+          <button type="submit" class="btn btn-success w-100" style="border-radius: 10px;">Update Entry</button>
+        </div>
+        <div class="col-md-6">
+          <a href="{% url 'timetable' %}" class="btn btn-secondary w-100" style="border-radius: 10px;">Cancel</a>
         </div>
       </div>
     </form>

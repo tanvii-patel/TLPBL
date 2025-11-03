@@ -4,22 +4,34 @@
   <h2 class="fw-bold text-success mb-4">📅 Your Timetable</h2>
 
   <!-- Timetable Form -->
-  <div class="card p-4 shadow-sm mb-4">
+  <div
+    class="card p-4 shadow-sm mb-4"
+    style="
+      border-radius: 15px;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    "
+  >
     <h5 class="text-secondary mb-3">Add New Entry</h5>
     <form method="POST">
       {% csrf_token %}
-      <div class="row g-2">
+      <div class="row g-3">
         <div class="col-md-3">
           <input
             type="text"
             name="subject"
             class="form-control"
             placeholder="Subject"
+            style="border-radius: 10px"
             required
           />
         </div>
         <div class="col-md-2">
-          <select name="day" class="form-control" required>
+          <select
+            name="day"
+            class="form-control"
+            style="border-radius: 10px"
+            required
+          >
             <option value="">Select Day</option>
             <option value="Monday">Monday</option>
             <option value="Tuesday">Tuesday</option>
@@ -36,6 +48,7 @@
             name="start_time"
             class="form-control"
             placeholder="Start Time"
+            style="border-radius: 10px"
             required
           />
         </div>
@@ -45,21 +58,28 @@
             name="end_time"
             class="form-control"
             placeholder="End Time"
+            style="border-radius: 10px"
             required
           />
         </div>
         <div class="col-md-2">
-          <button type="submit" class="btn btn-success w-100">Add</button>
+          <button
+            type="submit"
+            class="btn btn-success w-100"
+            style="border-radius: 10px"
+          >
+            Add
+          </button>
         </div>
       </div>
     </form>
   </div>
 
   <!-- Timetable List -->
-  <div class="card shadow-sm p-3">
+  <div class="card shadow-sm p-3" style="border-radius: 15px">
     {% if timetables %}
-    <table class="table table-bordered table-hover align-middle">
-      <thead class="table-success text-center">
+    <table class="table table-hover align-middle">
+      <thead class="table-success text-center" style="border-radius: 10px">
         <tr>
           <th>Subject</th>
           <th>Day</th>
@@ -70,7 +90,7 @@
       </thead>
       <tbody>
         {% for t in timetables %}
-        <tr>
+        <tr style="border-radius: 10px">
           <td>{{ t.subject }}</td>
           <td>{{ t.day }}</td>
           <td>{{ t.start_time }}</td>
@@ -79,11 +99,13 @@
             <a
               href="{% url 'timetable_edit' t.pk %}"
               class="btn btn-sm btn-outline-primary"
+              style="border-radius: 8px"
               >Edit</a
             >
             <a
               href="{% url 'timetable_delete' t.id %}"
               class="btn btn-sm btn-outline-danger"
+              style="border-radius: 8px"
               >Delete</a
             >
           </td>
@@ -92,7 +114,10 @@
       </tbody>
     </table>
     {% else %}
-    <div class="alert alert-warning text-center m-2">
+    <div
+      class="alert alert-warning text-center m-3"
+      style="border-radius: 10px"
+    >
       No timetable entries yet — add one above!
     </div>
     {% endif %}

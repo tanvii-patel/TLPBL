@@ -1,18 +1,30 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<h2>Edit Task</h2>
 
-<form method="POST" class="mb-3">
-  {% csrf_token %}
-  <div class="mb-2">
-    <label for="title">Task Title</label>
-    <input type="text" name="title" value="{{ task.title }}" class="form-control" required>
+<div class="container mt-5">
+  <h2 class="fw-bold text-success mb-4">✏️ Edit Task</h2>
+
+  <div class="card p-4 shadow-sm" style="border-radius: 15px; background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row g-3">
+        <div class="col-md-12">
+          <label for="title" class="form-label">Task Title</label>
+          <input type="text" name="title" value="{{ task.title }}" class="form-control" style="border-radius: 10px;" required>
+        </div>
+        <div class="col-md-12">
+          <label for="due_date" class="form-label">Due Date</label>
+          <input type="date" name="due_date" value="{{ task.due_date|date:'Y-m-d' }}" class="form-control" style="border-radius: 10px;">
+        </div>
+        <div class="col-md-6">
+          <button type="submit" class="btn btn-success w-100" style="border-radius: 10px;">Update Task</button>
+        </div>
+        <div class="col-md-6">
+          <a href="{% url 'tasks' %}" class="btn btn-secondary w-100" style="border-radius: 10px;">Cancel</a>
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="mb-2">
-    <label for="due_date">Due Date</label>
-    <input type="date" name="due_date" value="{{ task.due_date|date:'Y-m-d' }}" class="form-control">
-  </div>
-  <button type="submit" class="btn btn-success mt-2">Update Task</button>
-  <a href="{% url 'tasks' %}" class="btn btn-secondary mt-2">Cancel</a>
-</form>
+</div>
+
 {% endblock %}
